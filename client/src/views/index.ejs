@@ -22,7 +22,7 @@
             background: white;
             padding: 20px;
             border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
         .voo {
             border-bottom: 1px solid #ccc;
@@ -49,19 +49,52 @@
             color: #888;
             margin-left: 10px;
         }
+        .search-container {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .search-input {
+            padding: 10px;
+            width: 80%;
+            max-width: 400px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Lista de Voos</h1>
-        <% dados.forEach(function(voo) { %>
-            <div class="voo">
-                <div class="voo-info">
-                    <h3><%= voo.origem %> <i class="fas fa-plane"></i> <%= voo.destino %></h3>
-                    <p>ID: <span class="voo-id"><%= voo.id %></span></p>
+        <div class="search-container">
+            <input type="text" id="search" class="search-input" placeholder="Buscar por destino..." onkeyup="filterVoos()">
+        </div>
+        <div id="voos-list">
+            <% dados.forEach(function(voo) { %>
+                <div class="voo" data-destino="<%= voo.destino.toLowerCase() %>">
+                    <div class="voo-info">
+                        <h3><%= voo.origem %> <i class="fas fa-plane"></i> <%= voo.destino %></h3>
+                        <p>ID: <span class="voo-id"><%= voo.id %></span></p>
+                    </div>
                 </div>
-            </div>
-        <% }); %>
+            <% }); %>
+        </div>
     </div>
+
+    <script>
+        function filterVoos() {
+            const input = document.getElementById('search');
+            const filter = input.value.toLowerCase();
+            const voos = document.querySelectorAll('.voo');
+
+            voos.forEach(voo => {
+                const destino = voo.getAttribute('data-destino');
+                if (destino.includes(filter)) {
+                    voo.style.display = '';
+                } else {
+                    voo.style.display = 'none';
+                }
+            });
+        }
+    </script>
 </body>
 </html>
