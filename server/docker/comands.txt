@@ -1,0 +1,2 @@
+docker build -t voo_server .
+docker run -d --name project_server -p 3000:3000 voo_server
