@@ -2,21 +2,24 @@ const express = require('express');
 const app = express();
 app.use(express.json());
 
-// In-memory database for demonstration
-let voos = [
-    { id: 1, numeroVoo: 'VA123', origem: 'GRU', destino: 'JFK', partida: '2023-05-20T10:00:00' },
-    { id: 2, numeroVoo: 'VA456', origem: 'JFK', destino: 'GRU', partida: '2023-05-21T18:00:00' }
+const voos = [
+    { id: 1, origem: 'São Paulo', destino: 'Rio de Janeiro' },
+    { id: 2, origem: 'Belo Horizonte', destino: 'Salvador' },
+    { id: 3, origem: 'Curitiba', destino: 'Florianópolis' },
+    { id: 4, origem: 'Porto Alegre', destino: 'São Paulo' },
+    { id: 5, origem: 'Rio de Janeiro', destino: 'Brasília' },
+    { id: 6, origem: 'Fortaleza', destino: 'Recife' },
+    { id: 7, origem: 'Salvador', destino: 'São Paulo' },
+    { id: 8, origem: 'Manaus', destino: 'Belém' },
+    { id: 9, origem: 'Natal', destino: 'João Pessoa' },
+    { id: 10, origem: 'Goiânia', destino: 'Cuiabá' },
 ];
 
-// GET all flights
 app.get("/voo", (req, res) => {
-    res.json(voos);
-});
-
-// GET a specific flight by ID
-app.get("/voo/:id", (req, res) => {
-    const voo = voos.find(v => v.id === parseInt(req.params.id));
-    if (!voo) return res.status(404).json({ message: 'Flight not found' });
+    const voo = voos.find(v => v.id === Number(req.query.id)) || voos;
+    if (!voo) {
+        return res.status(404).json({ message: 'Flight not found' });
+    }
     res.json(voo);
 });
 
