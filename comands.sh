@@ -1,3 +1,4 @@
+#!/bin/bash
 docker network create voo_network
 
 cd server
