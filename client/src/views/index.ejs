@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Voos</title>
+    <title><%= titulo %></title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
@@ -60,12 +60,17 @@
             border: 1px solid #ccc;
             border-radius: 4px;
         }
+        .search-input:focus {
+            border-color: #007BFF;
+            outline: none;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Lista de Voos</h1>
+        <h1><%= mensagem %></h1>
         <div class="search-container">
+            <label for="search" style="display: none;">Buscar por destino:</label>
             <input type="text" id="search" class="search-input" placeholder="Buscar por destino..." onkeyup="filterVoos()">
         </div>
         <div id="voos-list">
@@ -73,7 +78,8 @@
                 <div class="voo" data-destino="<%= voo.destino.toLowerCase() %>">
                     <div class="voo-info">
                         <h3><%= voo.origem %> <i class="fas fa-plane"></i> <%= voo.destino %></h3>
-                        <p>ID: <span class="voo-id"><%= voo.id %></span></p>
+                        <p>Companhia Aérea: <span class="company"><%= voo.companhia %></span></p>
+                        <p>Preço: R$<span class="price"><%= voo.preco %></span>.99</p>
                     </div>
                 </div>
             <% }); %>
@@ -85,6 +91,13 @@
             const input = document.getElementById('search');
             const filter = input.value.toLowerCase();
             const voos = document.querySelectorAll('.voo');
+
+            if (filter.trim() === '') {
+                voos.forEach(voo => {
+                    voo.style.display = '';
+                });
+                return;
+            }
 
             voos.forEach(voo => {
                 const destino = voo.getAttribute('data-destino');

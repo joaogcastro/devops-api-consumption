@@ -9,8 +9,8 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
 const dadosEstaticos = {
-    titulo: 'Viajar Ponto Com',
-    mensagem: 'Escolha seu voo!'
+    titulo: 'Viajar.com',
+    mensagem: 'Melhores passagens direto na Viajar.com!'
 };
 
 app.get('/', (req, res) => {
