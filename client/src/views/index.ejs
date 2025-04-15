@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Voos</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .voo {
+            border-bottom: 1px solid #ccc;
+            padding: 10px 0;
+            display: flex;
+            justify-content: space-between;
+        }
+        .voo:last-child {
+            border-bottom: none;
+        }
+        .voo-info {
+            flex-grow: 1;
+        }
+        .voo-info h3 {
+            margin: 0;
+            color: #007BFF;
+        }
+        .voo-info p {
+            margin: 5px 0;
+            color: #555;
+        }
+        .voo-id {
+            font-weight: bold;
+            color: #888;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Lista de Voos</h1>
+        <% dados.forEach(function(voo) { %>
+            <div class="voo">
+                <div class="voo-info">
+                    <h3><%= voo.origem %> <i class="fas fa-plane"></i> <%= voo.destino %></h3>
+                    <p>ID: <span class="voo-id"><%= voo.id %></span></p>
+                </div>
+            </div>
+        <% }); %>
+    </div>
+</body>
+</html>
