@@ -14,7 +14,7 @@ const dadosEstaticos = {
 };
 
 app.get('/', (req, res) => {
-    axios.get("http://127.0.0.1:3000/voo")
+    axios.get("http://project_server:3000/voo")
     .then(response => {
         const dadosVoo = response.data;
         // console.log(JSON.stringify(dadosVoo)); 
