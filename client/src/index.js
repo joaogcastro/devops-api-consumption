@@ -1,6 +1,7 @@
 const express = require('express');
 const axios = require('axios');
 const path = require('path');
+const redis = require('./redis');
 
 const app = express();
 const PORT = 4000;
@@ -10,20 +11,35 @@ app.set('views', path.join(__dirname, 'views'));
 
 const dadosEstaticos = {
     titulo: 'Viajar.com',
-    mensagem: 'Melhores passagens direto na Viajar.com!'
+    mensagem: 'Melhores passagens e hotéis, só na Viajar.com!'
 };
 
-app.get('/', (req, res) => {
-    axios.get("http://project_server:3000/voo")
-    .then(response => {
-        const dadosVoo = response.data;
-        // console.log(JSON.stringify(dadosVoo)); 
-        res.render('index', { ...dadosEstaticos, dados: dadosVoo });
-    })
-    .catch(error => {
-        console.error("Erro ao buscar dados:", error);
-        res.status(500).send("Erro ao buscar dados");
-    });
+async function getVoos() {
+    let dadosVoo = await redis.getVoosCache();
+
+    if(dadosVoo.length > 0) {
+        console.log('Dados recuperados do cache');
+    } else {
+        try {
+            const response = await axios.get("http://localhost:3000/voo");
+            dadosVoo = response.data || [];
+
+            if(dadosVoo.length > 0) {
+                redis.setVoosCache(dadosVoo);
+            }
+        } catch (e) {
+            console.error(`Erro ao obter os dados de voo. Erro: ${e}`);
+        }
+    }
+    return dadosVoo;
+}
+
+app.get('/', async (req, res) => {
+    const dados = {
+        voos: await getVoos(),
+        hoteis: null
+    }
+    res.render('index', { ...dadosEstaticos, dados: dados });
 });
 
 app.listen(PORT, () => {

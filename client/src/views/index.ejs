@@ -74,7 +74,7 @@
             <input type="text" id="search" class="search-input" placeholder="Buscar por destino..." onkeyup="filterVoos()">
         </div>
         <div id="voos-list">
-            <% dados.forEach(function(voo) { %>
+            <% dados.voos.forEach(function(voo) { %>
                 <div class="voo" data-destino="<%= voo.destino.toLowerCase() %>">
                     <div class="voo-info">
                         <h3><%= voo.origem %> <i class="fas fa-plane"></i> <%= voo.destino %></h3>
