@@ -24,27 +24,27 @@
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-        .voo {
+        .voo, .hotel {
             border-bottom: 1px solid #ccc;
             padding: 10px 0;
             display: flex;
             justify-content: space-between;
         }
-        .voo:last-child {
+        .voo:last-child, .hotel:last-child {
             border-bottom: none;
         }
-        .voo-info {
+        .voo-info, .hotel-info {
             flex-grow: 1;
         }
-        .voo-info h3 {
+        .voo-info h3, .hotel-info h3 {
             margin: 0;
             color: #007BFF;
         }
-        .voo-info p {
+        .voo-info p, .hotel-info p {
             margin: 5px 0;
             color: #555;
         }
-        .voo-id {
+        .voo-id, .hotel-id {
             font-weight: bold;
             color: #888;
             margin-left: 10px;
@@ -64,15 +64,32 @@
             border-color: #007BFF;
             outline: none;
         }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1><%= mensagem %></h1>
+
+        <!-- Seção de busca de voos -->
         <div class="search-container">
             <label for="search" style="display: none;">Buscar por destino:</label>
             <input type="text" id="search" class="search-input" placeholder="Buscar por destino..." onkeyup="filterVoos()">
         </div>
+
+        <!-- Lista de voos -->
         <div id="voos-list">
             <% dados.voos.forEach(function(voo) { %>
                 <div class="voo" data-destino="<%= voo.destino.toLowerCase() %>">
@@ -84,6 +101,31 @@
                 </div>
             <% }); %>
         </div>
+
+        <!-- Tabela de Hotéis -->
+        <h2>Hotéis Disponíveis</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nome do Hotel</th>
+                    <th>Classificação</th>
+                    <th>Plano</th>
+                    <th>Preço</th>
+                    <th>Localização</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% dados.hoteis.forEach(function(hotel) { %>
+                    <tr>
+                        <td><%= hotel.nomeHotel %></td>
+                        <td><%= hotel.classificacao %> Estrelas</td>
+                        <td><%= hotel.plano %></td>
+                        <td>R$<%= hotel.preco %></td>
+                        <td><%= hotel.localizacao %></td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
     </div>
 
     <script>

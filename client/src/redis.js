@@ -54,7 +54,48 @@ async function getVoosCache() {
     }
 }
 
+async function setHoteisCache(hoteis, ttl = 60) {
+    try {
+        for (const hotel of hoteis) {
+            await redis.set(
+                `front:hotel:${normalizarString(hotel.nomeHotel)}`,
+                JSON.stringify(hotel),
+                'EX',
+                ttl
+            );
+        }
+        console.log('Hotéis salvos no cache');
+    } catch (error) {
+        console.error('Erro ao salvar hotéis no cache:', error);
+    }
+}
+
+async function getHoteisCache() {
+    try {
+        const chaves = await redis.keys('front:hotel:*');
+
+        if (chaves.length === 0) {
+            return [];
+        }
+
+        const valores = await redis.mget(chaves);
+
+        const hoteis = valores
+            .map(valor => {
+                return JSON.parse(valor);
+            })
+            .filter(hotel => hotel !== null) || [];
+
+        return hoteis;
+    } catch (error) {
+        console.error('Erro ao buscar hotéis no cache:', error);
+        return [];
+    }
+}
+
 module.exports = {
     setVoosCache,
-    getVoosCache
+    getVoosCache,
+    setHoteisCache,
+    getHoteisCache
 };

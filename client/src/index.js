@@ -14,6 +14,26 @@ const dadosEstaticos = {
     mensagem: 'Melhores passagens e hotéis, só na Viajar.com!'
 };
 
+async function getHoteis() {
+    let dadosHotel = await redis.getHoteisCache();
+
+    if (dadosHotel.length > 0) {
+        console.log('Dados de hotéis recuperados do cache');
+    } else {
+        try {
+            const response = await axios.get("http://127.0.0.1:5000/hotel");
+            dadosHotel = response.data || [];
+
+            if (dadosHotel.length > 0) {
+                await redis.setHoteisCache(dadosHotel);
+            }
+        } catch (e) {
+            console.error(`Erro ao obter os dados de hotéis. Erro: ${e}`);
+        }
+    }
+    return dadosHotel;
+}
+
 async function getVoos() {
     let dadosVoo = await redis.getVoosCache();
 
@@ -37,8 +57,9 @@ async function getVoos() {
 app.get('/', async (req, res) => {
     const dados = {
         voos: await getVoos(),
-        hoteis: null
+        hoteis: await getHoteis()
     }
+
     res.render('index', { ...dadosEstaticos, dados: dados });
 });
 
