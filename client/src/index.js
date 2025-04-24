@@ -21,8 +21,8 @@ async function getVoos() {
         console.log('Dados recuperados do cache');
     } else {
         try {
-            const response = await axios.get("http://localhost:3000/voo");
-            dadosVoo = response.data || [];
+            const response = await axios.get("http://localhost:3000/voos");
+            dadosVoo = response.data.data || [];
 
             if(dadosVoo.length > 0) {
                 redis.setVoosCache(dadosVoo);

@@ -7,7 +7,7 @@ const app = express();
 const redisClient = redis.createClient({
     socket: {
         host: process.env.REDIS_HOST || '127.0.0.1',
-        port: process.env.REDIS_PORT || 6000,  // Porta padrão do Redis é 6379
+        port: process.env.REDIS_PORT || 6379,  // Porta padrão do Redis é 6379
     },
     legacyMode: false // Usando a API moderna
 });
