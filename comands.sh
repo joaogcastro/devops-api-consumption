@@ -28,16 +28,24 @@ docker build -t voo_client .
 echo "Iniciando o contêiner do cliente..."
 docker run -d --name project_client --network voo_network -p 4000:4000 voo_client
 
+# Retorna ao diretório raiz
+cd ..
+
+# Construindo e executando o hotel
+echo "Construindo a imagem do hotel..."
+cd server_hotel
+docker build -t voo_hotel .
+
+echo "Iniciando o contêiner do hotel..."
+docker run -d --name project_hotel --network voo_network -p 5000:5000 voo_hotel
+
 # Construindo e executando o Regis
 docker run -d -p 6000:6379 --name=voo_redis redis
 
 # Construindo e executando o Mysql
-docker run -d --name voo_mysql \
-  -e MYSQL_ROOT_PASSWORD=voo123 \
-  -e MYSQL_DATABASE=voos \
-  -p 3308:3306 \
-  -e MYSQL_USER=voo \
-  -e MYSQL_PASSWORD=voo123 \
-  mysql:8.0
+docker run -d --name voo_mysql -e MYSQL_ROOT_PASSWORD=voo123 -e MYSQL_DATABASE=voos -p 3308:3306 -e MYSQL_USER=voo -e MYSQL_PASSWORD=voo123 mysql:8.0
+
+# Construindo e executando o Mysql
+docker run -d --name hotel_mysql -e MYSQL_ROOT_PASSWORD=hotel123 -e MYSQL_DATABASE=hoteis -p 3310:3306 -e MYSQL_USER=hotel -e MYSQL_PASSWORD=hotel123 mysql:8.0
 
 echo "Ambiente configurado com sucesso!"
